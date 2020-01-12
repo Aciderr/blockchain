@@ -1,0 +1,1602 @@
+{
+  "contractName": "Loan",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "loanInfo",
+      "outputs": [
+        {
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "name": "startDate",
+          "type": "string"
+        },
+        {
+          "name": "endDate",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "name": "startDate",
+          "type": "string"
+        },
+        {
+          "name": "endDate",
+          "type": "string"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    }
+  ],
+  "bytecode": "0x6060604052341561000f57600080fd5b60405161036e38038061036e833981016040528080519060200190919080518201919060200180518201919050506100456100b5565b606060405190810160405280858152602001848152602001838152509050806000808201518160000155602082015181600101908051906020019061008b9291906100e3565b5060408201518160020190805190602001906100a89291906100e3565b509050505050505061019c565b606060405190810160405280600081526020016100d0610163565b81526020016100dd610163565b81525090565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061012457805160ff1916838001178555610152565b82800160010185558215610152579182015b82811115610151578251825591602001919060010190610136565b5b50905061015f9190610177565b5090565b602060405190810160405280600081525090565b61019991905b8082111561019557600081600090555060010161017d565b5090565b90565b6101c3806101ab6000396000f300606060405260043610610041576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063798a5a4e14610046575b600080fd5b341561005157600080fd5b610059610181565b6040518084815260200180602001806020018381038352858181546001816001161561010002031660029004815260200191508054600181600116156101000203166002900480156100ec5780601f106100c1576101008083540402835291602001916100ec565b820191906000526020600020905b8154815290600101906020018083116100cf57829003601f168201915b505083810382528481815460018160011615610100020316600290048152602001915080546001816001161561010002031660029004801561016f5780601f106101445761010080835404028352916020019161016f565b820191906000526020600020905b81548152906001019060200180831161015257829003601f168201915b50509550505050505060405180910390f35b60008060000154908060010190806002019050835600a165627a7a7230582081997ed3aca5e719cc99d8db44e88313b450860246ff09016adf79fd46f9da6a0029",
+  "deployedBytecode": "0x606060405260043610610041576000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff168063798a5a4e14610046575b600080fd5b341561005157600080fd5b610059610181565b6040518084815260200180602001806020018381038352858181546001816001161561010002031660029004815260200191508054600181600116156101000203166002900480156100ec5780601f106100c1576101008083540402835291602001916100ec565b820191906000526020600020905b8154815290600101906020018083116100cf57829003601f168201915b505083810382528481815460018160011615610100020316600290048152602001915080546001816001161561010002031660029004801561016f5780601f106101445761010080835404028352916020019161016f565b820191906000526020600020905b81548152906001019060200180831161015257829003601f168201915b50509550505050505060405180910390f35b60008060000154908060010190806002019050835600a165627a7a7230582081997ed3aca5e719cc99d8db44e88313b450860246ff09016adf79fd46f9da6a0029",
+  "sourceMap": "766:439:1:-;;;824:269;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;902:25;;:::i;:::-;930:114;;;;;;;;;961:5;930:114;;;;992:9;930:114;;;;1025:7;930:114;;;902:142;;1076:9;1065:8;:20;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;824:269;;;;766:439;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;:::i;:::-;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;",
+  "deployedSourceMap": "766:439:1:-;;;;;;;;;;;;;;;;;;;;;;;;787:24;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity 0.4.18;\r\n\r\ncontract System {\r\n    address[] public clients;\r\n    \r\n    function createClient(string name) public {\r\n        address newClient = new Client(name);\r\n        clients.push(newClient);\r\n    }\r\n    \r\n    function getClients() public view returns (address[]) {\r\n        return clients;\r\n    }\r\n}\r\n\r\ncontract Client {\r\n    string public name;\r\n    address[] public loans;  \r\n    \r\n    function Client(string _name) public {\r\n        name = _name;\r\n    }\r\n    \r\n    function createLoan(uint value, string startDate, string endDate) public {\r\n        address newLoan = new Loan(value, startDate, endDate);\r\n        loans.push(newLoan);\r\n    }\r\n    \r\n    function getLoans() public view returns (address[]) {\r\n        return loans;\r\n    }\r\n}\r\n\r\ncontract Loan {\r\n    LoanInfo public loanInfo;\r\n    \r\n    function Loan(uint value, string startDate, string endDate) public {\r\n        LoanInfo memory _loanInfo = LoanInfo({\r\n            value: value,\r\n            startDate: startDate,\r\n            endDate: endDate\r\n        });\r\n        \r\n        loanInfo = _loanInfo;\r\n    }\r\n    \r\n    struct LoanInfo {\r\n        uint value;\r\n        string startDate;\r\n        string endDate;\r\n    }\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n",
+  "sourcePath": "D:\\pulpit\\KUBA\\praca magisterska\\Ethereum\\app\\contracts\\System.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/D/pulpit/KUBA/praca magisterska/Ethereum/app/contracts/System.sol",
+      "exportedSymbols": {
+        "Client": [
+          140
+        ],
+        "Loan": [
+          172
+        ],
+        "System": [
+          90
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "0.4",
+            ".18"
+          ]
+        },
+        "id": 58,
+        "name": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            140
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            90
+          ],
+          "name": "System",
+          "scope": 173
+        },
+        "children": [
+          {
+            "attributes": {
+              "constant": false,
+              "name": "clients",
+              "scope": 90,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "address[] storage ref",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "length": null,
+                  "type": "address[] storage pointer"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 59,
+                    "name": "ElementaryTypeName",
+                    "src": "50:7:1"
+                  }
+                ],
+                "id": 60,
+                "name": "ArrayTypeName",
+                "src": "50:9:1"
+              }
+            ],
+            "id": 61,
+            "name": "VariableDeclaration",
+            "src": "50:24:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "createClient",
+              "payable": false,
+              "scope": 90,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "name",
+                      "scope": 80,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 62,
+                        "name": "ElementaryTypeName",
+                        "src": "109:6:1"
+                      }
+                    ],
+                    "id": 63,
+                    "name": "VariableDeclaration",
+                    "src": "109:11:1"
+                  }
+                ],
+                "id": 64,
+                "name": "ParameterList",
+                "src": "108:13:1"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 65,
+                "name": "ParameterList",
+                "src": "129:0:1"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        67
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "newClient",
+                          "scope": 80,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "address",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "address",
+                              "type": "address"
+                            },
+                            "id": 66,
+                            "name": "ElementaryTypeName",
+                            "src": "140:7:1"
+                          }
+                        ],
+                        "id": 67,
+                        "name": "VariableDeclaration",
+                        "src": "140:17:1"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "contract Client",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "type": "function (string memory) returns (contract Client)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "contractScope": null,
+                                  "name": "Client",
+                                  "referencedDeclaration": 140,
+                                  "type": "contract Client"
+                                },
+                                "id": 68,
+                                "name": "UserDefinedTypeName",
+                                "src": "164:6:1"
+                              }
+                            ],
+                            "id": 69,
+                            "name": "NewExpression",
+                            "src": "160:10:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 63,
+                              "type": "string memory",
+                              "value": "name"
+                            },
+                            "id": 70,
+                            "name": "Identifier",
+                            "src": "171:4:1"
+                          }
+                        ],
+                        "id": 71,
+                        "name": "FunctionCall",
+                        "src": "160:16:1"
+                      }
+                    ],
+                    "id": 72,
+                    "name": "VariableDeclarationStatement",
+                    "src": "140:36:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "uint256",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "push",
+                              "referencedDeclaration": null,
+                              "type": "function (address) returns (uint256)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 61,
+                                  "type": "address[] storage ref",
+                                  "value": "clients"
+                                },
+                                "id": 73,
+                                "name": "Identifier",
+                                "src": "187:7:1"
+                              }
+                            ],
+                            "id": 75,
+                            "name": "MemberAccess",
+                            "src": "187:12:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 67,
+                              "type": "address",
+                              "value": "newClient"
+                            },
+                            "id": 76,
+                            "name": "Identifier",
+                            "src": "200:9:1"
+                          }
+                        ],
+                        "id": 77,
+                        "name": "FunctionCall",
+                        "src": "187:23:1"
+                      }
+                    ],
+                    "id": 78,
+                    "name": "ExpressionStatement",
+                    "src": "187:23:1"
+                  }
+                ],
+                "id": 79,
+                "name": "Block",
+                "src": "129:89:1"
+              }
+            ],
+            "id": 80,
+            "name": "FunctionDefinition",
+            "src": "87:131:1"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getClients",
+              "payable": false,
+              "scope": 90,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 81,
+                "name": "ParameterList",
+                "src": "249:2:1"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 89,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address[] memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "length": null,
+                          "type": "address[] storage pointer"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "address",
+                              "type": "address"
+                            },
+                            "id": 82,
+                            "name": "ElementaryTypeName",
+                            "src": "273:7:1"
+                          }
+                        ],
+                        "id": 83,
+                        "name": "ArrayTypeName",
+                        "src": "273:9:1"
+                      }
+                    ],
+                    "id": 84,
+                    "name": "VariableDeclaration",
+                    "src": "273:9:1"
+                  }
+                ],
+                "id": 85,
+                "name": "ParameterList",
+                "src": "272:11:1"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 85
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 61,
+                          "type": "address[] storage ref",
+                          "value": "clients"
+                        },
+                        "id": 86,
+                        "name": "Identifier",
+                        "src": "302:7:1"
+                      }
+                    ],
+                    "id": 87,
+                    "name": "Return",
+                    "src": "295:14:1"
+                  }
+                ],
+                "id": 88,
+                "name": "Block",
+                "src": "284:33:1"
+              }
+            ],
+            "id": 89,
+            "name": "FunctionDefinition",
+            "src": "230:87:1"
+          }
+        ],
+        "id": 90,
+        "name": "ContractDefinition",
+        "src": "27:293:1"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            172
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            140
+          ],
+          "name": "Client",
+          "scope": 173
+        },
+        "children": [
+          {
+            "attributes": {
+              "constant": false,
+              "name": "name",
+              "scope": 140,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "string storage ref",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "string",
+                  "type": "string storage pointer"
+                },
+                "id": 91,
+                "name": "ElementaryTypeName",
+                "src": "347:6:1"
+              }
+            ],
+            "id": 92,
+            "name": "VariableDeclaration",
+            "src": "347:18:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "loans",
+              "scope": 140,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "address[] storage ref",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "length": null,
+                  "type": "address[] storage pointer"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "type": "address"
+                    },
+                    "id": 93,
+                    "name": "ElementaryTypeName",
+                    "src": "372:7:1"
+                  }
+                ],
+                "id": 94,
+                "name": "ArrayTypeName",
+                "src": "372:9:1"
+              }
+            ],
+            "id": 95,
+            "name": "VariableDeclaration",
+            "src": "372:22:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": true,
+              "modifiers": [
+                null
+              ],
+              "name": "Client",
+              "payable": false,
+              "scope": 140,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_name",
+                      "scope": 105,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 96,
+                        "name": "ElementaryTypeName",
+                        "src": "425:6:1"
+                      }
+                    ],
+                    "id": 97,
+                    "name": "VariableDeclaration",
+                    "src": "425:12:1"
+                  }
+                ],
+                "id": 98,
+                "name": "ParameterList",
+                "src": "424:14:1"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 99,
+                "name": "ParameterList",
+                "src": "446:0:1"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "string storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 92,
+                              "type": "string storage ref",
+                              "value": "name"
+                            },
+                            "id": 100,
+                            "name": "Identifier",
+                            "src": "457:4:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 97,
+                              "type": "string memory",
+                              "value": "_name"
+                            },
+                            "id": 101,
+                            "name": "Identifier",
+                            "src": "464:5:1"
+                          }
+                        ],
+                        "id": 102,
+                        "name": "Assignment",
+                        "src": "457:12:1"
+                      }
+                    ],
+                    "id": 103,
+                    "name": "ExpressionStatement",
+                    "src": "457:12:1"
+                  }
+                ],
+                "id": 104,
+                "name": "Block",
+                "src": "446:31:1"
+              }
+            ],
+            "id": 105,
+            "name": "FunctionDefinition",
+            "src": "409:68:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "createLoan",
+              "payable": false,
+              "scope": 140,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "value",
+                      "scope": 130,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 106,
+                        "name": "ElementaryTypeName",
+                        "src": "509:4:1"
+                      }
+                    ],
+                    "id": 107,
+                    "name": "VariableDeclaration",
+                    "src": "509:10:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "startDate",
+                      "scope": 130,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 108,
+                        "name": "ElementaryTypeName",
+                        "src": "521:6:1"
+                      }
+                    ],
+                    "id": 109,
+                    "name": "VariableDeclaration",
+                    "src": "521:16:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "endDate",
+                      "scope": 130,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 110,
+                        "name": "ElementaryTypeName",
+                        "src": "539:6:1"
+                      }
+                    ],
+                    "id": 111,
+                    "name": "VariableDeclaration",
+                    "src": "539:14:1"
+                  }
+                ],
+                "id": 112,
+                "name": "ParameterList",
+                "src": "508:46:1"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 113,
+                "name": "ParameterList",
+                "src": "562:0:1"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        115
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "newLoan",
+                          "scope": 130,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "address",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "address",
+                              "type": "address"
+                            },
+                            "id": 114,
+                            "name": "ElementaryTypeName",
+                            "src": "573:7:1"
+                          }
+                        ],
+                        "id": 115,
+                        "name": "VariableDeclaration",
+                        "src": "573:15:1"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "contract Loan",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_uint256",
+                                  "typeString": "uint256"
+                                },
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                },
+                                {
+                                  "typeIdentifier": "t_string_memory_ptr",
+                                  "typeString": "string memory"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "type": "function (uint256,string memory,string memory) returns (contract Loan)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "contractScope": null,
+                                  "name": "Loan",
+                                  "referencedDeclaration": 172,
+                                  "type": "contract Loan"
+                                },
+                                "id": 116,
+                                "name": "UserDefinedTypeName",
+                                "src": "595:4:1"
+                              }
+                            ],
+                            "id": 117,
+                            "name": "NewExpression",
+                            "src": "591:8:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 107,
+                              "type": "uint256",
+                              "value": "value"
+                            },
+                            "id": 118,
+                            "name": "Identifier",
+                            "src": "600:5:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 109,
+                              "type": "string memory",
+                              "value": "startDate"
+                            },
+                            "id": 119,
+                            "name": "Identifier",
+                            "src": "607:9:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 111,
+                              "type": "string memory",
+                              "value": "endDate"
+                            },
+                            "id": 120,
+                            "name": "Identifier",
+                            "src": "618:7:1"
+                          }
+                        ],
+                        "id": 121,
+                        "name": "FunctionCall",
+                        "src": "591:35:1"
+                      }
+                    ],
+                    "id": 122,
+                    "name": "VariableDeclarationStatement",
+                    "src": "573:53:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "uint256",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "push",
+                              "referencedDeclaration": null,
+                              "type": "function (address) returns (uint256)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 95,
+                                  "type": "address[] storage ref",
+                                  "value": "loans"
+                                },
+                                "id": 123,
+                                "name": "Identifier",
+                                "src": "637:5:1"
+                              }
+                            ],
+                            "id": 125,
+                            "name": "MemberAccess",
+                            "src": "637:10:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 115,
+                              "type": "address",
+                              "value": "newLoan"
+                            },
+                            "id": 126,
+                            "name": "Identifier",
+                            "src": "648:7:1"
+                          }
+                        ],
+                        "id": 127,
+                        "name": "FunctionCall",
+                        "src": "637:19:1"
+                      }
+                    ],
+                    "id": 128,
+                    "name": "ExpressionStatement",
+                    "src": "637:19:1"
+                  }
+                ],
+                "id": 129,
+                "name": "Block",
+                "src": "562:102:1"
+              }
+            ],
+            "id": 130,
+            "name": "FunctionDefinition",
+            "src": "489:175:1"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getLoans",
+              "payable": false,
+              "scope": 140,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 131,
+                "name": "ParameterList",
+                "src": "693:2:1"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 139,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address[] memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "length": null,
+                          "type": "address[] storage pointer"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "address",
+                              "type": "address"
+                            },
+                            "id": 132,
+                            "name": "ElementaryTypeName",
+                            "src": "717:7:1"
+                          }
+                        ],
+                        "id": 133,
+                        "name": "ArrayTypeName",
+                        "src": "717:9:1"
+                      }
+                    ],
+                    "id": 134,
+                    "name": "VariableDeclaration",
+                    "src": "717:9:1"
+                  }
+                ],
+                "id": 135,
+                "name": "ParameterList",
+                "src": "716:11:1"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 135
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 95,
+                          "type": "address[] storage ref",
+                          "value": "loans"
+                        },
+                        "id": 136,
+                        "name": "Identifier",
+                        "src": "746:5:1"
+                      }
+                    ],
+                    "id": 137,
+                    "name": "Return",
+                    "src": "739:12:1"
+                  }
+                ],
+                "id": 138,
+                "name": "Block",
+                "src": "728:31:1"
+              }
+            ],
+            "id": 139,
+            "name": "FunctionDefinition",
+            "src": "676:83:1"
+          }
+        ],
+        "id": 140,
+        "name": "ContractDefinition",
+        "src": "324:438:1"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            172
+          ],
+          "name": "Loan",
+          "scope": 173
+        },
+        "children": [
+          {
+            "attributes": {
+              "constant": false,
+              "name": "loanInfo",
+              "scope": 172,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "struct Loan.LoanInfo storage ref",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "LoanInfo",
+                  "referencedDeclaration": 171,
+                  "type": "struct Loan.LoanInfo storage pointer"
+                },
+                "id": 141,
+                "name": "UserDefinedTypeName",
+                "src": "787:8:1"
+              }
+            ],
+            "id": 142,
+            "name": "VariableDeclaration",
+            "src": "787:24:1"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": true,
+              "modifiers": [
+                null
+              ],
+              "name": "Loan",
+              "payable": false,
+              "scope": 172,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "value",
+                      "scope": 164,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 143,
+                        "name": "ElementaryTypeName",
+                        "src": "838:4:1"
+                      }
+                    ],
+                    "id": 144,
+                    "name": "VariableDeclaration",
+                    "src": "838:10:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "startDate",
+                      "scope": 164,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 145,
+                        "name": "ElementaryTypeName",
+                        "src": "850:6:1"
+                      }
+                    ],
+                    "id": 146,
+                    "name": "VariableDeclaration",
+                    "src": "850:16:1"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "endDate",
+                      "scope": 164,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 147,
+                        "name": "ElementaryTypeName",
+                        "src": "868:6:1"
+                      }
+                    ],
+                    "id": 148,
+                    "name": "VariableDeclaration",
+                    "src": "868:14:1"
+                  }
+                ],
+                "id": 149,
+                "name": "ParameterList",
+                "src": "837:46:1"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 150,
+                "name": "ParameterList",
+                "src": "891:0:1"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        152
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "_loanInfo",
+                          "scope": 164,
+                          "stateVariable": false,
+                          "storageLocation": "memory",
+                          "type": "struct Loan.LoanInfo memory",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "contractScope": null,
+                              "name": "LoanInfo",
+                              "referencedDeclaration": 171,
+                              "type": "struct Loan.LoanInfo storage pointer"
+                            },
+                            "id": 151,
+                            "name": "UserDefinedTypeName",
+                            "src": "902:8:1"
+                          }
+                        ],
+                        "id": 152,
+                        "name": "VariableDeclaration",
+                        "src": "902:25:1"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": true,
+                          "lValueRequested": false,
+                          "names": [
+                            "value",
+                            "startDate",
+                            "endDate"
+                          ],
+                          "type": "struct Loan.LoanInfo memory",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 171,
+                              "type": "type(struct Loan.LoanInfo storage pointer)",
+                              "value": "LoanInfo"
+                            },
+                            "id": 153,
+                            "name": "Identifier",
+                            "src": "930:8:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 144,
+                              "type": "uint256",
+                              "value": "value"
+                            },
+                            "id": 154,
+                            "name": "Identifier",
+                            "src": "961:5:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 146,
+                              "type": "string memory",
+                              "value": "startDate"
+                            },
+                            "id": 155,
+                            "name": "Identifier",
+                            "src": "992:9:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 148,
+                              "type": "string memory",
+                              "value": "endDate"
+                            },
+                            "id": 156,
+                            "name": "Identifier",
+                            "src": "1025:7:1"
+                          }
+                        ],
+                        "id": 157,
+                        "name": "FunctionCall",
+                        "src": "930:114:1"
+                      }
+                    ],
+                    "id": 158,
+                    "name": "VariableDeclarationStatement",
+                    "src": "902:142:1"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "struct Loan.LoanInfo storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 142,
+                              "type": "struct Loan.LoanInfo storage ref",
+                              "value": "loanInfo"
+                            },
+                            "id": 159,
+                            "name": "Identifier",
+                            "src": "1065:8:1"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 152,
+                              "type": "struct Loan.LoanInfo memory",
+                              "value": "_loanInfo"
+                            },
+                            "id": 160,
+                            "name": "Identifier",
+                            "src": "1076:9:1"
+                          }
+                        ],
+                        "id": 161,
+                        "name": "Assignment",
+                        "src": "1065:20:1"
+                      }
+                    ],
+                    "id": 162,
+                    "name": "ExpressionStatement",
+                    "src": "1065:20:1"
+                  }
+                ],
+                "id": 163,
+                "name": "Block",
+                "src": "891:202:1"
+              }
+            ],
+            "id": 164,
+            "name": "FunctionDefinition",
+            "src": "824:269:1"
+          },
+          {
+            "attributes": {
+              "canonicalName": "Loan.LoanInfo",
+              "name": "LoanInfo",
+              "scope": 172,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "value",
+                  "scope": 171,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint",
+                      "type": "uint256"
+                    },
+                    "id": 165,
+                    "name": "ElementaryTypeName",
+                    "src": "1132:4:1"
+                  }
+                ],
+                "id": 166,
+                "name": "VariableDeclaration",
+                "src": "1132:10:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "startDate",
+                  "scope": 171,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "string storage pointer",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "string",
+                      "type": "string storage pointer"
+                    },
+                    "id": 167,
+                    "name": "ElementaryTypeName",
+                    "src": "1153:6:1"
+                  }
+                ],
+                "id": 168,
+                "name": "VariableDeclaration",
+                "src": "1153:16:1"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "endDate",
+                  "scope": 171,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "string storage pointer",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "string",
+                      "type": "string storage pointer"
+                    },
+                    "id": 169,
+                    "name": "ElementaryTypeName",
+                    "src": "1180:6:1"
+                  }
+                ],
+                "id": 170,
+                "name": "VariableDeclaration",
+                "src": "1180:14:1"
+              }
+            ],
+            "id": 171,
+            "name": "StructDefinition",
+            "src": "1105:97:1"
+          }
+        ],
+        "id": 172,
+        "name": "ContractDefinition",
+        "src": "766:439:1"
+      }
+    ],
+    "id": 173,
+    "name": "SourceUnit",
+    "src": "0:1225:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2019-12-23T21:29:38.350Z"
+}
